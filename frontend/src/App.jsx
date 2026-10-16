@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import RepoIngestForm from './components/RepoIngestForm'
 import ChatPanel from './components/ChatPanel'
+import ArchitectureExplorer from './components/ArchitectureExplorer'
 
 function App() {
   const [repoUrl, setRepoUrl] = useState('')
@@ -43,6 +44,8 @@ function App() {
 
         {error && <div className="error-box">{error}</div>}
         {loading && <div className="status-box">Loading…</div>}
+
+        {repoUrl && <ArchitectureExplorer repoUrl={repoUrl} />}
 
         <ChatPanel
           repoUrl={repoUrl}

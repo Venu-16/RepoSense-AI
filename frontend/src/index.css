@@ -15,7 +15,8 @@ body {
 }
 
 button,
-input {
+input,
+a {
   font: inherit;
 }
 
@@ -131,4 +132,235 @@ button:disabled {
 .history-question {
   font-weight: 600;
   margin-bottom: 8px;
+}
+
+.architecture-card {
+  overflow: hidden;
+}
+
+.architecture-header,
+.architecture-metadata,
+.architecture-layout {
+  display: flex;
+  gap: 20px;
+}
+
+.architecture-header {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.architecture-header h2 {
+  margin-top: 0;
+}
+
+.architecture-header p {
+  max-width: 680px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.architecture-metadata {
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+
+.architecture-metadata > div {
+  flex: 1 1 240px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.architecture-metadata p {
+  margin: 6px 0 0;
+  color: #475569;
+}
+
+.architecture-partial {
+  border: 1px solid #fbbf24;
+  background: #fffbeb;
+  color: #854d0e;
+}
+
+.architecture-empty {
+  padding: 24px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  color: #475569;
+}
+
+.architecture-layout {
+  align-items: flex-start;
+}
+
+.architecture-graph-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-height: 680px;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background-color: #fbfdff;
+}
+
+.architecture-graph {
+  display: block;
+  max-width: none;
+}
+
+.architecture-edges line {
+  stroke: #94a3b8;
+  stroke-width: 1.5;
+}
+
+.architecture-edges marker path {
+  fill: #94a3b8;
+}
+
+.architecture-edge {
+  cursor: pointer;
+}
+
+.architecture-edge text {
+  fill: #475569;
+  font-size: 10px;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: #fbfdff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.architecture-edge:focus line,
+.architecture-edge.is-selected line {
+  stroke: #2563eb;
+  stroke-width: 3;
+}
+
+.architecture-node {
+  cursor: pointer;
+}
+
+.architecture-node rect {
+  fill: white;
+  stroke: #64748b;
+  stroke-width: 1.5;
+}
+
+.architecture-node-framework rect {
+  fill: #eef2ff;
+  stroke: #4f46e5;
+}
+
+.architecture-node-route rect {
+  fill: #ecfdf5;
+  stroke: #059669;
+}
+
+.architecture-node-folder rect {
+  fill: #fffbeb;
+  stroke: #d97706;
+}
+
+.architecture-node.is-selected rect,
+.architecture-node:focus rect {
+  stroke: #2563eb;
+  stroke-width: 3;
+}
+
+.architecture-node-kind {
+  fill: #64748b;
+  font-size: 10px;
+}
+
+.architecture-node-label {
+  fill: #1f2937;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.architecture-inspector {
+  flex: 0 0 260px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f8fafc;
+  color: #334155;
+  overflow-wrap: anywhere;
+}
+
+.architecture-inspector h3 {
+  margin: 8px 0;
+  color: #0f172a;
+}
+
+.architecture-inspector p {
+  line-height: 1.5;
+}
+
+.architecture-inspector-type {
+  color: #4f46e5;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.architecture-inspector a {
+  color: #1d4ed8;
+}
+
+.architecture-tree {
+  margin-top: 18px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+}
+
+.architecture-tree summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.architecture-tree ul {
+  max-height: 320px;
+  overflow: auto;
+  list-style: none;
+  padding-left: 0;
+}
+
+.architecture-tree li {
+  padding-left: calc(var(--tree-depth, 0) * 12px);
+}
+
+.architecture-tree-item {
+  width: 100%;
+  padding: 7px 8px;
+  border-radius: 8px;
+  background: transparent;
+  color: #1f2937;
+  text-align: left;
+}
+
+.architecture-tree-item:hover,
+.architecture-tree-item:focus {
+  background: #eff6ff;
+}
+
+.architecture-tree-item span {
+  display: inline-block;
+  min-width: 80px;
+  color: #64748b;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .architecture-header,
+  .architecture-layout {
+    flex-direction: column;
+  }
+
+  .architecture-inspector {
+    flex: 1 1 auto;
+    width: 100%;
+  }
 }

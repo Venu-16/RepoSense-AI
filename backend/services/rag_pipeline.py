@@ -164,10 +164,20 @@ class RAGPipeline:
             ) -> str:
                 """Extract and summarize information from the context."""
                 try:
-                    # Extract the context section from the prompt
-                    context_match = re.search(r"Context:(.+?)(?:Question:|$)", prompt, re.DOTALL)
-                    question_match = re.search(r"Question:(.+?)(?:Answer:|$)", prompt, re.DOTALL)
-                    
+                    # Extract the context section from the prompt. The default
+                    # RetrievalQA prompt and the mock-friendly prompt both use
+                    # these labels, but vary slightly in formatting.
+                    context_match = re.search(
+                        r"(?:Context:|Use the following pieces of context to answer the question at the end\.)(.*?)(?:\n\s*Question:|\n\s*Helpful Answer:|$)",
+                        prompt,
+                        re.DOTALL,
+                    )
+                    question_match = re.search(
+                        r"(?:Question:|Question\s*:)(.*?)(?:\n\s*Helpful Answer:|\n\s*Answer:|$)",
+                        prompt,
+                        re.DOTALL,
+                    )
+
                     context = context_match.group(1).strip() if context_match else ""
                     question = question_match.group(1).strip() if question_match else ""
                     
@@ -263,6 +273,14 @@ class RAGPipeline:
                 chunks.extend(self._split_text(document))
         return chunks
 
+    def _get_mock_compatible_prompt(self) -> PromptTemplate:
+        return PromptTemplate(
+            input_variables=["context", "question"],
+            template=(
+                "Context:\n{context}\n\nQuestion: {question}\nHelpful Answer:"
+            ),
+        )
+
     def ingest_repository(self, repo_url: str, documents: list[Document]) -> int:
         if not documents:
             raise ValueError("No documents were provided for ingestion.")
@@ -282,13 +300,17 @@ class RAGPipeline:
             raise ValueError("Repository has not been ingested yet. Please call /ingest-repo first.")
 
         retriever = self.stores[repo_url].as_retriever(search_kwargs={"k": 5})
-        
-        # Use default RetrievalQA prompt - it handles context and query properly
+
+        chain_kwargs = {}
+        if getattr(self.llm, "_llm_type", "") == "enhanced-mock":
+            chain_kwargs["prompt"] = self._get_mock_compatible_prompt()
+
         chain = RetrievalQA.from_chain_type(
             llm=self.llm,
             chain_type="stuff",
             retriever=retriever,
             return_source_documents=True,
+            chain_type_kwargs=chain_kwargs or None,
         )
 
         try:

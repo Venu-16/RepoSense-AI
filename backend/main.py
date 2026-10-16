@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from backend.routes.architecture import router as architecture_router
 from backend.routes.ingest import router as ingest_router
 from backend.routes.query import router as query_router
 
@@ -25,6 +26,7 @@ app.add_middleware(
 
 app.include_router(ingest_router, prefix="/api", tags=["ingestion"])
 app.include_router(query_router, prefix="/api", tags=["query"])
+app.include_router(architecture_router, prefix="/api", tags=["architecture"])
 
 
 @app.get("/")
